@@ -1,5 +1,5 @@
 <template>
-    <q-page class="flex-center flex">
+    <q-page class="flex flex-center">
         <div class="q-pa-md" style="max-width: 400px">
             <div class="text-bold q-mb-lg text-h6">회원가입</div>
             <div class="q-gutter-xs">
