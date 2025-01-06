@@ -31,8 +31,13 @@ const $router = useRouter()
 function Login() {
     data.value.id = id.value
     data.value.pw = pwd.value
-    console.log(data.value)
-    //실제 로그인 요청 보내기
-    $router.push('/')
+
+    if (!id.value || !pwd.value) { //id 또는 pwd가 비어 있으면 경고 메시지 표시
+        alert("아이디 또는 비밀번호를 입력하세요")
+    }
+    else {
+        console.log(data.value) //실제 로그인 요청 보내기
+        $router.push('/') //로그인 성공 후 index페이지로 이동동
+    }
 }
 </script>
