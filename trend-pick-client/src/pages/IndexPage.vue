@@ -27,7 +27,6 @@
           <q-btn flat round color="primary" icon="share" />
         </q-card-actions>
       </div>
-
     </q-card>
   </q-page>
 </template>
