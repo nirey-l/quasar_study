@@ -1,18 +1,37 @@
 <template>
-    <q-page class="flex-center flex">
-        <div class="q-pa-md" style="max-width: 400px">
-            <div class="text-bold q-mb-lg text-h6">로그인</div>
-            <div class="q-gutter-md">
-                <q-input filled v-model="id" label="id" lazy-rules
-                    :rules="[val => val && val.length > 0 || 'Please type something']" />
+    <q-page>
+        <div class="q-pa-md">
+            <div class="row no-wrap shadow-2">
+                <q-toolbar class="col-8" :class="$q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-grey-3'">
+                    <q-btn flat round dense icon="menu" />
+                    <q-toolbar-title></q-toolbar-title>
+                    <q-btn flat round dense icon="search" />
+                </q-toolbar>
+                <q-toolbar class="col-4 bg-black text-white">
+                    <q-space />
+                    <!-- <q-btn flat round dense icon="shopping cart"  /> -->
+                    <q-btn flat round dense icon="favorite" />
+                </q-toolbar>
+            </div>
+        </div>
 
-                <q-input filled type="password" v-model="pwd" label="password" lazy-rules :rules="[
-                    val => val !== null && val !== '' || 'Please type your password',
-                ]" />
+        <div class="q-pa-xl"></div>
+        
+        <div class="flex-center flex">
+            <div class="q-pa-xl" style="max-width: 400px">
+                <div class="text-bold q-mb-lg text-h4">Log-in</div>
+                <div class="q-gutter-mb">
+                    <q-input filled v-model="id" label="id" lazy-rules
+                        :rules="[val => val && val.length > 0 || 'Please type something']" />
 
-                <div class="column q-gutter-y-md">
-                    <q-btn @click="Login" label="Login" type="submit" color="primary" />
-                    <q-btn @click="Signup" label="Signup" type="submit" color="primary" to="/signup" />
+                    <q-input filled type="password" v-model="pwd" label="password" lazy-rules :rules="[
+                        val => val !== null && val !== '' || 'Please type your password',
+                    ]" />
+
+                    <div class="column q-gutter-y-md">
+                        <q-btn @click="Login" label="Login" type="submit" color="black" />
+                        <q-btn @click="Signup" label="Signup" type="submit" color="black" to="/signup" />
+                    </div>
                 </div>
             </div>
         </div>
