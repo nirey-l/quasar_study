@@ -9,6 +9,7 @@
                 </q-toolbar>
                 <q-toolbar class="col-4 bg-black text-white">
                     <q-space />
+                    <q-btn flat round dense icon="Login" @click="Login" />
                     <!-- <q-btn flat round dense icon="shopping cart"  /> -->
                     <q-btn flat round dense icon="favorite" />
                 </q-toolbar>
@@ -76,5 +77,9 @@ function Signup() {
     else {
         alert("비밀번호가 일치하지 않습니다")
     }
+}
+
+function Login() {
+  $router.push('login')
 }
 </script>

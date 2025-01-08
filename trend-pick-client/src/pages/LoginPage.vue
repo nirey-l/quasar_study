@@ -56,7 +56,7 @@ function Login() {
     }
     else {
         console.log(data.value) //실제 로그인 요청 보내기
-        $router.push('/') //로그인 성공 후 index페이지로 이동동
+        $router.push('/') //로그인 성공 후 index페이지로 이동
     }
 }
 </script>
