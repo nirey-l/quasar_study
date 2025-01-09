@@ -1,17 +1,11 @@
 <template>
     <q-page>
-        <div class="q-pa-md">
+        <div class="q-pa-lg">
             <div class="row no-wrap shadow-2">
-                <q-toolbar class="col-8" :class="$q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-grey-3'">
+                <q-toolbar class="col" :class="$q.dark.isActive ? 'bg-black text-white' : 'bg-grey-3'">
                     <q-btn flat round dense icon="menu" />
                     <q-toolbar-title></q-toolbar-title>
                     <q-btn flat round dense icon="search" />
-                </q-toolbar>
-                <q-toolbar class="col-4 bg-black text-white">
-                    <q-space />
-                    <q-btn flat round dense icon="Login" @click="Login" />
-                    <!-- <q-btn flat round dense icon="shopping cart"  /> -->
-                    <q-btn flat round dense icon="favorite" />
                 </q-toolbar>
             </div>
         </div>
@@ -79,7 +73,4 @@ function Signup() {
     }
 }
 
-function Login() {
-  $router.push('login')
-}
 </script>

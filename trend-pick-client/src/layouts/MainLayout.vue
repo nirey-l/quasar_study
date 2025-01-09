@@ -1,41 +1,40 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+    <q-header class="row justify-between bg-black q-py-sm" elevated>    
+        <div class="row items-center">
+          <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+  
+          <div class="text-h5">
+            Trend Pick
+          </div>
+        </div>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+        <div class="justify-center">
+          <q-tabs v-model="tab" class="bg-black text-bold text-white">
+            <q-btn-dropdown v-for="tab, i in tabs" :key="i" auto-close stretch flat :label="tab.label">
+              <q-list>
+                <q-item v-for="option, i in tab.options" :key="i" clickable @click="tab = option">
+                  <q-item-section>{{ option }}</q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </q-tabs>
+        </div>
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
+        <div class="row justify-end items-center">
+          <q-btn flat round dense icon="login" @click="Login" />
+          <q-btn flat round dense icon="shopping_cart" />
+          <q-btn flat round dense icon="favorite" />
+        </div>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
+        <q-item-label header>
           Essential Links
         </q-item-label>
 
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
+
       </q-list>
     </q-drawer>
 
@@ -47,56 +46,21 @@
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { useRouter } from "vue-router";
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
+const $router = useRouter()
 const leftDrawerOpen = ref(false)
+const tab = ref()
+const tabs = ref([
+  { label: "Best", options: ["아우터", "원피스", "니트", "티셔츠", "블라우스/셔츠", "스커트", "팬츠"] },
+  { label: "New", options: ["아우터", "원피스", "니트", "티셔츠", "블라우스/셔츠", "스커트", "팬츠"] }
+])
 
-function toggleLeftDrawer () {
+function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+function Login() {
+  $router.push('login')
 }
 </script>
