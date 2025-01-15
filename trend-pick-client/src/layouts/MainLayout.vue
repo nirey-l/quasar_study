@@ -22,9 +22,9 @@
         </div>
 
         <div class="row justify-end items-center">
+          <q-btn flat round dense icon="home" @click="Index"/>
           <q-btn flat round dense icon="login" @click="Login" />
           <q-btn flat round dense icon="shopping_cart" @click="Cart"/>
-          <q-btn flat round dense icon="favorite" />
         </div>
     </q-header>
 
@@ -66,5 +66,9 @@ function Login() {
 
 function Cart() {
   $router.push('cart')
+}
+
+function Index() {
+  $router.push('')
 }
 </script>
