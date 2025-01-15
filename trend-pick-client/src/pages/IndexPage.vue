@@ -51,8 +51,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router"; //router: 라우팅, route: 페이지 url
-
+import { useRouter } from "vue-router"; 
 const $router = useRouter()
 const slide = ref(1) //첫 번째 슬라이드가 초기 상태에서 표시
 const autoplay = ref(true) //캐러셀은 초기 상태에서 자동 재생
