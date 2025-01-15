@@ -29,6 +29,7 @@
             </div>
             <div class="text-bold q-mb-lg text-h6">총금액</div>
             <div class="text-bold q-mb-lg text-h6">{{ totalPrice }}원</div>
+            <q-btn label="Shopping cart" color="black" @click="Cart" />
         </div>
     </q-page>
 </template>
@@ -36,9 +37,11 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { useRouter } from "vue-router";
 
 const productId = ref()
 const $route = useRoute()
+const $router = useRouter()
 const slide = ref(1) //첫 번째 슬라이드가 초기 상태에서 표시
 const price = 30000
 const quantity = ref(1)
@@ -52,4 +55,7 @@ onMounted(() => {
     productId.value = $route.query.itemId
 })
 
+function Cart() {
+    $router.push('cart')
+}
 </script>

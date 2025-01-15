@@ -23,7 +23,7 @@
 
         <div class="row justify-end items-center">
           <q-btn flat round dense icon="login" @click="Login" />
-          <q-btn flat round dense icon="shopping_cart" />
+          <q-btn flat round dense icon="shopping_cart" @click="Cart"/>
           <q-btn flat round dense icon="favorite" />
         </div>
     </q-header>
@@ -62,5 +62,9 @@ function toggleLeftDrawer() {
 
 function Login() {
   $router.push('login')
+}
+
+function Cart() {
+  $router.push('cart')
 }
 </script>
