@@ -3,7 +3,6 @@
     <q-header class="row justify-between bg-black q-py-sm" elevated>    
         <div class="row items-center">
           <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-  
           <div class="text-h5">
             Trend Pick
           </div>
@@ -69,6 +68,6 @@ function Cart() {
 }
 
 function Index() {
-  $router.push('')
+  $router.push(' ')
 }
 </script>
