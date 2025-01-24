@@ -22,10 +22,13 @@
                         <q-input filled v-model="id" label="id/e-mail" lazy-rules
                             :rules="[val => val && val.length > 0 || 'Please type something']">
                             <template v-slot:append>
-                                <q-btn label="중복확인" type="submit" color="black" class="q-my-xs" />
+                                <q-btn @click="checkEmail" label="이메일 인증" type="submit" color="black" class="q-my-xs" />
                             </template>
                         </q-input>
                     </div>
+                    <q-input filled v-model="code" label="인증 코드" lazy-rules
+                        :rules="[val => val && val.length > 0 || 'Please type something']">
+                    </q-input>
 
                     <q-input filled type="password" v-model="pwd" label="password" lazy-rules :rules="[
                         val => val !== null && val !== '' || 'Please type your password',
@@ -44,26 +47,38 @@
 </template>
 
 <script setup>
+import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const $router = useRouter()
 const name = ref()
 const id = ref()
+const code = ref()
 const pwd = ref()
 const checkPwd = ref()
 const data = ref()
+
+function checkEmail() {
+    api.post('/auth/register', { email: id.value })
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
 
 function Signup() {
     if (!name.value || !id.value || !pwd.value || !checkPwd.value) {
         alert("모든 값을 입력해주세요.");
     }
 
-    if (pwd.value===checkPwd.value) { //비밀번호 확인
+    if (pwd.value === checkPwd.value) { //비밀번호 확인
         data.value = { //회원가입 데이터 생성
             nickName: name,
             email: id,
-            password : pwd
+            password: pwd
         }
         console.log(data.value)
         $router.push('/')

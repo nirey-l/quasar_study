@@ -42,6 +42,7 @@ const pwd = ref()
 const data = ref({})
 const $router = useRouter()
 
+
 function Login() {
     data.value.id = id.value
     data.value.pw = pwd.value

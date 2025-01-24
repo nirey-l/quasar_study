@@ -4,7 +4,6 @@
     <div class="q-pa-lg" >
       <div class="row no-wrap shadow-2">
         <q-toolbar class="col" :class="$q.dark.isActive ? 'bg-black text-white' : 'bg-grey-3'">
-          <q-btn flat round dense icon="menu" />
           <q-toolbar-title></q-toolbar-title>
           <q-btn flat round dense icon="search" />
         </q-toolbar>
@@ -24,7 +23,7 @@
         <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
       </q-carousel>
 
-      <div class="q-mt-xl q-mb-lg flex flex-center text-bold text-h5">New Item</div>
+      <div class="q-mt-xl q-mb-lg flex flex-center text-bold text-h5">{{ category }}</div>
 
       <div class="row" >
         <div class="q-mr-lg q-mb-xl " v-for="(item, i) in items" :key="i" style="width: 340px;">
@@ -43,16 +42,15 @@
           </q-card>
         </div>
       </div>
-
-      <div class="q-mt-xl q-mb-lg flex flex-center text-bold text-h5">Weekly Best</div>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router"; 
+import { onMounted, ref,watch} from "vue";
+import { useRoute, useRouter } from "vue-router"; 
 const $router = useRouter()
+const $route = useRoute()
 const slide = ref(1) //첫 번째 슬라이드가 초기 상태에서 표시
 const autoplay = ref(true) //캐러셀은 초기 상태에서 자동 재생
 const items = ref([
@@ -65,12 +63,25 @@ const items = ref([
   { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
   { image: "~assets/1.png", name: "남성 니트", price: "30,000원" }
 ])
+const category = ref()
 
 function Detail(index) {
   console.log(index)
   $router.push(`detail?itemId=${index}`)
 }
 
+// Watch: 어떤 값이 바뀌는 것을 감시함
+watch(
+  () => $route.query.category,
+  (newCategory) => {
+    console.log('Category changed:', newCategory);
+    category.value = newCategory;
+  }
+);
+
+// onMounted: 페이지 처음 로딩시 실행할 코드
 onMounted(()=>{
+  console.log($route.query.category)
+  category.value = $route.query.category
 })
 </script>
