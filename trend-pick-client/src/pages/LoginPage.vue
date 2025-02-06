@@ -39,27 +39,34 @@ import { useRouter } from "vue-router";
 
 const id = ref()
 const pwd = ref()
-const data = ref({})
 const $router = useRouter()
+// const data = ref({})
 
 function Login() {
-    api.post('/auth/login', { email: id.value, password: pwd.value})
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        
-    data.value.id = id.value
-    data.value.pw = pwd.value
+    // data.value.id = id.value
+    // data.value.pw = pwd.value
 
     if (!id.value || !pwd.value) { //id 또는 pwd가 비어 있으면 경고 메시지 표시
         alert("아이디 또는 비밀번호를 입력하세요")
     }
     else {
-        console.log(data.value) //실제 로그인 요청 보내기
-        $router.push('/') //로그인 성공 후 index페이지로 이동
+        api.post('/auth/login', { email: id.value, password: pwd.value })
+            .then((r) => {
+                console.log(r.data);
+                if (r.data.message === "로그인 성공") {
+                    //  r.data.userData.jwtToken
+
+                    $router.push('/') //로그인 성공 후 index페이지로 이동
+                } else {
+                    alert('로그인 실패')
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                alert('로그인 실패')
+            });
+
+        // api.post(사용자 정보 주세요)
     }
 }
 </script>
