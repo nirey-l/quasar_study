@@ -3,7 +3,6 @@
         <div class="q-pa-lg">
             <div class="row no-wrap shadow-2">
                 <q-toolbar class="col" :class="$q.dark.isActive ? 'bg-black text-white' : 'bg-grey-3'">
-                    <q-btn flat round dense icon="menu" />
                     <q-toolbar-title></q-toolbar-title>
                     <q-btn flat round dense icon="search" />
                 </q-toolbar>
@@ -36,6 +35,8 @@
                     <q-input filled type="password" v-model="checkPwd" label="재입력" lazy-rules :rules="[
                         val => val !== null && val !== '' || 'Please type your password',
                     ]" />
+                    <q-input filled v-model="phone" label="phone" lazy-rules
+                        :rules="[val => val && val.length > 0 || 'Please type something']" />
 
                     <div class="column q-gutter-y-md">
                         <q-btn @click="Signup" label="Signup" type="submit" color="black" />
@@ -57,10 +58,11 @@ const id = ref()
 const code = ref()
 const pwd = ref()
 const checkPwd = ref()
+const phone = ref()
 const data = ref()
 
 function checkEmail() {
-    api.post('/auth/register', { email: id.value })
+    api.post('/auth/register', { email: id.value }) //checkEmail() 함수는 이메일을 서버에 POST 요청으로 보냄, 요청 URL: /auth/register, 요청 본문(body): { email: id.value }
         .then((res) => {
             console.log(res);
         })
@@ -70,6 +72,19 @@ function checkEmail() {
 }
 
 function Signup() {
+    api.post('/auth/finalize-registration', { email: id.value,
+        password: pwd.value,
+        nickname: name.value,
+        phone: phone.value,
+        verificationCode: code.value
+    })
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
     if (!name.value || !id.value || !pwd.value || !checkPwd.value) {
         alert("모든 값을 입력해주세요.");
     }

@@ -3,7 +3,6 @@
         <div class="q-pa-lg">
             <div class="row no-wrap shadow-2">
                 <q-toolbar class="col" :class="$q.dark.isActive ? 'bg-black text-white' : 'bg-grey-3'">
-                    <q-btn flat round dense icon="menu" />
                     <q-toolbar-title></q-toolbar-title>
                     <q-btn flat round dense icon="search" />
                 </q-toolbar>
@@ -34,6 +33,7 @@
 </template>
 
 <script setup>
+import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -42,8 +42,15 @@ const pwd = ref()
 const data = ref({})
 const $router = useRouter()
 
-
 function Login() {
+    api.post('/auth/login', { email: id.value, password: pwd.value})
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+        
     data.value.id = id.value
     data.value.pw = pwd.value
 
