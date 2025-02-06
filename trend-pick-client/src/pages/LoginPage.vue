@@ -12,7 +12,7 @@
         <div class="q-pa-xl"></div>
 
         <div class="flex-center flex">
-            <div class="q-pa-xl" style="max-width: 400px">
+            <div class="q-pa-xl" style="max-width: 900px">
                 <div class="text-bold q-mb-lg text-h4">Log-in</div>
                 <div class="q-gutter-mb">
                     <q-input filled v-model="id" label="id" lazy-rules
@@ -22,9 +22,13 @@
                         val => val !== null && val !== '' || 'Please type your password',
                     ]" />
 
-                    <div class="column q-gutter-y-md">
+                    <div class="row justify-between">
                         <q-btn @click="Login" label="Login" type="submit" color="black" />
                         <q-btn @click="Signup" label="Signup" type="submit" color="black" to="/signup" />
+                    </div>
+
+                    <div class="flex-center flex q-my-md ">
+                        <q-btn flat @click="find_pwd" label="forgot pwd?" type="submit" to="/find_pwd"/>
                     </div>
                 </div>
             </div>
@@ -40,21 +44,18 @@ import { useRouter } from "vue-router";
 const id = ref()
 const pwd = ref()
 const $router = useRouter()
-// const data = ref({})
+
 
 function Login() {
-    // data.value.id = id.value
-    // data.value.pw = pwd.value
-
     if (!id.value || !pwd.value) { //id 또는 pwd가 비어 있으면 경고 메시지 표시
         alert("아이디 또는 비밀번호를 입력하세요")
     }
     else {
         api.post('/auth/login', { email: id.value, password: pwd.value })
-            .then((r) => {
-                console.log(r.data);
-                if (r.data.message === "로그인 성공") {
-                    //  r.data.userData.jwtToken
+            .then((res) => {
+                console.log(res.data);
+                if (res.data.message === "로그인 성공") {
+                    //  r.data.userData.jwtToken  
 
                     $router.push('/') //로그인 성공 후 index페이지로 이동
                 } else {
@@ -65,8 +66,6 @@ function Login() {
                 console.error(error);
                 alert('로그인 실패')
             });
-
-        // api.post(사용자 정보 주세요)
     }
 }
 </script>
