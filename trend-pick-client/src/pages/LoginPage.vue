@@ -55,8 +55,6 @@ function Login() {
             .then((res) => {
                 console.log(res.data);
                 if (res.data.message === "로그인 성공") {
-                    //  r.data.userData.jwtToken  
-
                     $router.push('/') //로그인 성공 후 index페이지로 이동
                 } else {
                     alert('로그인 실패')
