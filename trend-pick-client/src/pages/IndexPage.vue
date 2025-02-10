@@ -64,6 +64,7 @@ const items = ref([
   { id: 7, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
   { id: 8, image: "~assets/1.png", name: "남성 니트", price: "30,000원" }
 ])
+
 const category = ref($route.query.category || "all"); // 만약 URL에서 category 값을 찾을 수 없으면 all(전체 상품 보기)을 기본값으로 설정)
 
 // 전체 상품 조회 API
@@ -136,6 +137,15 @@ watch(
 
 function wishlist() {
   $router.push('wishlist')
+
+  api.post(`/add`, { itemId: items.value })
+    .then((res) => {
+      console.log(res.data)
+      //$router.push('wishlist')
+    })
+    .catch((error) => {
+      console.error(error)
+    });
 }
 
 </script>
