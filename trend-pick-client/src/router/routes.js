@@ -8,7 +8,8 @@ const routes = [
       { path: 'signup', component: () => import('pages/SignupPage.vue') },
       { path: 'detail', component: () => import('pages/DetailPage.vue') },
       { path: 'cart', component: () => import('pages/CartPage.vue') },
-      { path: 'find_pwd', component: () => import('pages/FindpwdPage.vue') }
+      { path: 'find_pwd', component: () => import('pages/FindpwdPage.vue') },
+      { path: 'wishlist', component: () => import('src/pages/Wishlist_Page.vue') }
     ]
   },
 

@@ -26,15 +26,15 @@
 
       <div class="row">
         <div class="q-mr-lg q-mb-xl " v-for="(item, i) in items" :key="i" style="width: 340px;">
-          <q-card @click="Detail(i)" style="max-width: 350px;" class="my-card cursor-pointer" flat bordered>
-            <img src="~assets/1.png">
+          <q-card style="max-width: 350px;" class="my-card cursor-pointer" flat bordered>
+            <img src="~assets/1.png" @click="Detail(i)">
             <div class="row justify-between items-center q-pa-md">
               <div>
                 <div class="text-bold">{{ item.name }}</div>
                 <div>{{ item.price }}</div>
               </div>
               <q-card-actions align="right">
-                <q-btn flat round color="red" icon="favorite" />
+                <q-btn flat round color="red" icon="favorite" @click="wishlist" />
                 <q-btn flat round color="primary" icon="share" />
               </q-card-actions>
             </div>
@@ -101,16 +101,16 @@ function Detail(index) {
   const item = items.value[index] // 해당 상품 객체를 가져옴
   const itemId = item.id // 해당 상품의 id 값을 가져옴
 
-  if (!itemId) {
-    console.error("itemId is undefined");
-    return;
-  }
+  // if (!itemId) {
+  //   console.error("itemId is undefined");
+  //   return;
+  // }
 
-  console.log("Selected Item ID:", itemId);
+  // console.log("Selected Item ID:", itemId);
 
   api.get(`/item/${itemId}`)
     .then((res) => {
-      console.log(res)
+      console.log(res.data)
       $router.push(`detail?itemId=${itemId}`)
     })
     .catch((error) => {
@@ -133,5 +133,9 @@ watch(
     fetchCategoryItems(newCategory);
   }
 );
+
+function wishlist() {
+  $router.push('wishlist')
+}
 
 </script>
