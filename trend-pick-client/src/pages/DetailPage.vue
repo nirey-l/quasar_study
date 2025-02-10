@@ -11,7 +11,7 @@
         </div>
 
         <div class="col-4 column content-center">
-            <div class="text-bold q-mb-md text-h5">남성 니트</div>
+            <div class="text-bold q-mb-md text-h5">{{ name }}</div>
             <div class="text-bold q-mb-md text-h6">{{ price }}원</div>
             <!-- {{ price }}는 Vue의 데이터 바인딩을 이용해 price 값을 표시 -->
 
@@ -47,6 +47,7 @@ const productId = ref()
 const $route = useRoute()
 const $router = useRouter()
 const slide = ref(1) //첫 번째 슬라이드가 초기 상태에서 표시
+const name = "남성 니트"
 const price = 30000
 const quantity = ref(1)
 const totalPrice = computed(() => price*quantity.value) //computed(): 이미 ref로 선언된 값에 따라 또 바껴야 하는 변수

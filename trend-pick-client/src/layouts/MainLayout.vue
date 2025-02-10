@@ -3,7 +3,7 @@
     <q-header class="row justify-between bg-black q-py-sm q-px-lg" elevated>
       <div class="row items-center">
         <q-btn class="q-mr-lg" flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-        <div class="text-h5" @click="Index">
+        <div class="text-h5 class cursor-pointer" @click="Index">
           Trend Pick
         </div>
       </div>

@@ -55,20 +55,38 @@ const $route = useRoute()
 const slide = ref(1) //첫 번째 슬라이드가 초기 상태에서 표시
 const autoplay = ref(true) //캐러셀은 초기 상태에서 자동 재생
 const items = ref([
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  // { image: "~assets/1.png", name: "남성 니트", price: "30,000원" }
+  { id: 1, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
+  { id: 2, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
+  { id: 3, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
+  { id: 4, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
+  { id: 5, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
+  { id: 6, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
+  { id: 7, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
+  { id: 8, image: "~assets/1.png", name: "남성 니트", price: "30,000원" }
 ])
-const category = ref($route.query.category || "all"); // 현재 선택된 카테고리
+const category = ref($route.query.category || "all"); // 만약 URL에서 category 값을 찾을 수 없으면 all(전체 상품 보기)을 기본값으로 설정)
 
 // 전체 상품 조회 API
 function fetchItems() {
   api.get('/item')
+    .then((res) => {
+      console.log(res.data);
+      items.value = res.data; // API에서 가져온 데이터를 items 배열에 저장
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+}
+
+// 카테고리별 상품 조회 API
+function fetchCategoryItems(categoryName) {
+  // 잘못된 요청 방지
+  if (!categoryName || categoryName === "all") {
+    fetchItems(); // categoryName이 없거나 all이면 전체 상품을 불러옴
+    return;
+  }
+
+  api.get(`/category/${categoryName}`)
     .then((res) => {
       console.log(res.data);
       items.value = res.data; // 데이터 반영
@@ -78,31 +96,30 @@ function fetchItems() {
     })
 }
 
-// 카테고리별 상품 조회 API
-function fetchCategoryItems(categoryName) {
-  if (!categoryName || categoryName === "all") {
-    fetchItems();
-    return;
-  } // 잘못된 요청 방지
-
-  api.get(`/category/${categoryName}`) 
-        .then((res) => {
-            console.log(res.data);
-            items.value = res.data; // 데이터 반영
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-}
-
 // 상품 상세 페이지 이동
 function Detail(index) {
-  console.log(index);
-  $router.push(`detail?itemId=${index}`)
+  const item = items.value[index] // 해당 상품 객체를 가져옴
+  const itemId = item.id // 해당 상품의 id 값을 가져옴
+
+  if (!itemId) {
+    console.error("itemId is undefined");
+    return;
+  }
+
+  console.log("Selected Item ID:", itemId);
+
+  api.get(`/item/${itemId}`)
+    .then((res) => {
+      console.log(res)
+      $router.push(`detail?itemId=${itemId}`)
+    })
+    .catch((error) => {
+      console.error(error)
+    });
 }
 
 // 페이지 로딩 시 전체 상품 데이터 가져오기
-// // onMounted: 페이지 처음 로딩시 실행할 코드
+// onMounted: 페이지 처음 로딩시 실행할 코드
 onMounted(() => {
   fetchCategoryItems(category.value);
 });
@@ -113,13 +130,8 @@ watch(
   () => $route.query.category,
   (newCategory) => {
     console.log("Category changed:", newCategory);
-    fetchCategoryItems(category.value);
+    fetchCategoryItems(newCategory);
   }
 );
 
-
-// onMounted(() => {
-//   console.log($route.query.category)
-//   category.value = $route.query.category
-// })
 </script>
