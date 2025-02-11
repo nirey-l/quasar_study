@@ -11,7 +11,8 @@
       <div class="row justify-end items-center">
         <q-btn class="q-mr-md" flat round dense icon="login" @click="Login" />
         <q-btn class="q-mr-md" flat round dense icon="favorite" @click="Wishlist" />
-        <q-btn flat round dense icon="shopping_cart" @click="Cart" />
+        <q-btn class="q-mr-md" flat round dense icon="shopping_cart" @click="Cart" />
+        <q-btn flat round dense icon="event_note" @click="Order" />
       </div>
     </q-header>
 
@@ -69,6 +70,10 @@ function Category(cat) {
 function Wishlist() {
   console.log()
   $router.push(`wishlist`)
+}
+
+function Order() {
+  $router.push('order')
 }
 
 onMounted(() => {

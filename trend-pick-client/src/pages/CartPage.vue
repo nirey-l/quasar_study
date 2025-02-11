@@ -9,9 +9,10 @@
                     <q-item-section avatar>
                         <img src="~assets/1.png" class="q-mb-lg" style="max-width: 200px;">
                     </q-item-section>
-                    <q-item-section class="column items-center">
+                    <q-item-section class="column q-ml-xl cotent-center">
                         <div class="text-subtitle1 text-bold">{{ item.name }}</div>
                         <div class="text-subtitle1 text-bold">{{ item.price }}</div>
+                        <div class="text-subtitle1 text-bold">{{ item.size }}</div>
                     </q-item-section>
                     <q-item-section>
                         <div class="column items-center q-pa-md q-mb-lg">
@@ -35,7 +36,7 @@
             </div>
 
             <div class="q-px-sm q-mt-sm">
-                <q-btn label="Order" color="black" @click="order"/>
+                <q-btn label="Order" color="black" @click="Index"/>
             </div>
         </div>
     </div>
@@ -44,12 +45,13 @@
 <script setup>
 import { api } from "src/boot/axios";
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router'; //route: 페이지 url, router: 라우팅
+import { useRouter } from 'vue-router';
 
+const $router = useRouter()
 const items = ref([
-    { name: "남성 니트", price: "30,000원", checkbox: false, count: 1},
-    { name: "남성 니트", price: "30,000원", checkbox: false, count: 1},
-    { name: "남성 니트", price: "30,000원", checkbox: false, count: 1}
+    { name: "남성 니트", price: "30,000원", checkbox: false, size: "M", count: 1},
+    { name: "남성 니트", price: "30,000원", checkbox: false, size: "M", count: 1},
+    { name: "남성 니트", price: "30,000원", checkbox: false, size: "M", count: 1}
 ])
 const item = items.value // 해당 상품 객체를 가져옴
 const itemId = item.id // 해당 상품의 id 값을 가져옴
@@ -85,8 +87,9 @@ function removeItem(index) {
     });
 }
 
-function order() {
-    $router.push('order')
+function Index() {
+alert("주문이 완료됐습니다");
+  $router.push('/')
 }
 
 // onMounted: 페이지 처음 로딩시 실행할 코드
