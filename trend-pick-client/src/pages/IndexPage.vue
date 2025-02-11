@@ -97,7 +97,7 @@ function fetchCategoryItems(categoryName) {
     })
 }
 
-// 상품 상세 페이지 이동
+// 상품 상세 페이지 이동/조회
 function Detail(index) {
   const item = items.value[index] // 해당 상품 객체를 가져옴
   const itemId = item.id // 해당 상품의 id 값을 가져옴
@@ -113,6 +113,20 @@ function Detail(index) {
     .then((res) => {
       console.log(res.data)
       $router.push(`detail?itemId=${itemId}`)
+    })
+    .catch((error) => {
+      console.error(error)
+    });
+}
+
+// 위시리스트 상품 추가
+function wishlist() {
+  $router.push('wishlist')
+
+  api.post(`/add`, { itemId: items.value })
+    .then((res) => {
+      console.log(res.data)
+      //$router.push('wishlist')
     })
     .catch((error) => {
       console.error(error)
@@ -135,17 +149,5 @@ watch(
   }
 );
 
-function wishlist() {
-  $router.push('wishlist')
-
-  api.post(`/add`, { itemId: items.value })
-    .then((res) => {
-      console.log(res.data)
-      //$router.push('wishlist')
-    })
-    .catch((error) => {
-      console.error(error)
-    });
-}
 
 </script>

@@ -45,7 +45,7 @@ const id = ref()
 const pwd = ref()
 const $router = useRouter()
 
-
+// 로그인
 function Login() {
     if (!id.value || !pwd.value) { //id 또는 pwd가 비어 있으면 경고 메시지 표시
         alert("아이디 또는 비밀번호를 입력하세요")

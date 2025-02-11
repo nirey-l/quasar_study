@@ -27,6 +27,7 @@ const $router = useRouter()
 const name = ref()
 const id = ref()
 
+// 비밀번호 찾기
 function Login() {
     if (!id.value || !name.value) {
         alert("모든 값을 입력해주세요.");

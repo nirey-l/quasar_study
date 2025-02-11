@@ -35,20 +35,24 @@
             </div>
 
             <div class="q-px-sm q-mt-sm">
-                <q-btn label="Order" color="black" />
+                <q-btn label="Order" color="black" @click="order"/>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { api } from "src/boot/axios";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router'; //route: 페이지 url, router: 라우팅
 
 const items = ref([
-  { name: "남성 니트", price: "30,000원", checkbox: false, count: 1},
-  { name: "남성 니트", price: "30,000원", checkbox: false, count: 1},
-  { name: "남성 니트", price: "30,000원", checkbox: false, count: 1}
+    { name: "남성 니트", price: "30,000원", checkbox: false, count: 1},
+    { name: "남성 니트", price: "30,000원", checkbox: false, count: 1},
+    { name: "남성 니트", price: "30,000원", checkbox: false, count: 1}
 ])
+const item = items.value // 해당 상품 객체를 가져옴
+const itemId = item.id // 해당 상품의 id 값을 가져옴
 // 선택된 아이템만 필터링
 const select = computed(() => {
   return items.value
@@ -56,8 +60,38 @@ const select = computed(() => {
     .map(item => item.name); // 해당 항목의 이름만 추출
 });
 
-function removeItem(index) {
-  items.value.splice(index, 1); // 해당 인덱스의 아이템을 배열에서 삭제
+// 장바구니 조회
+function cart() {
+    api.get(`/cart`)
+        .then((res) => {
+            items.value = res.data // 받아온 데이터를 items 배열에 저장하여 화면에 표시
+            console.log(res.data)
+        })
+        .catch((error) => {
+            console.error(error)
+        });
 }
+
+// 장바구니 상품 삭제
+function removeItem(index) {
+    items.value.splice(index, 1); // 해당 인덱스의 아이템을 배열에서 삭제
+    
+    api.delete(`/remove/${itemId}`)
+    .then((res) => {
+        console.log(res.data)
+    })
+    .catch((error) => {
+        console.error(error)
+    });
+}
+
+function order() {
+    $router.push('order')
+}
+
+// onMounted: 페이지 처음 로딩시 실행할 코드
+onMounted(() => {
+    cart();
+});
 
 </script>

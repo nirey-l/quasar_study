@@ -9,7 +9,8 @@ const routes = [
       { path: 'detail', component: () => import('pages/DetailPage.vue') },
       { path: 'cart', component: () => import('pages/CartPage.vue') },
       { path: 'find_pwd', component: () => import('pages/FindpwdPage.vue') },
-      { path: 'wishlist', component: () => import('src/pages/Wishlist_Page.vue') }
+      { path: 'wishlist', component: () => import('pages/Wishlist_Page.vue') },
+      { path: 'order', component: () => import('pages/OrderPage.vue') },
     ]
   },
 

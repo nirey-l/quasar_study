@@ -61,6 +61,7 @@ const checkPwd = ref()
 const phone = ref()
 const data = ref()
 
+// 회원가입(인증코드 전송) 
 function checkEmail() {
     api.post('/auth/register', { email: id.value }) //checkEmail() 함수는 이메일을 서버에 POST 요청으로 보냄, 요청 URL: /auth/register, 요청 본문(body): { email: id.value }
         .then((res) => {
@@ -71,6 +72,7 @@ function checkEmail() {
         });
 }
 
+// 회원가입
 function Signup() {
     api.post('/auth/finalize-registration', { email: id.value,
         password: pwd.value,
