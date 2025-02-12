@@ -32,16 +32,17 @@ function Login() {
     if (!id.value || !name.value) {
         alert("모든 값을 입력해주세요.");
     }
-
-    api.post('/auth/find-password', { email: id.value })
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
-    $router.push('login')
+    else {
+        api.post('/auth/find-password', { email: id.value })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    
+        $router.push('login')
+    }
 }
 
 </script>

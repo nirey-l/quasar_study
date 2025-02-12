@@ -90,19 +90,21 @@ function Signup() {
     if (!name.value || !id.value || !pwd.value || !checkPwd.value) {
         alert("모든 값을 입력해주세요.");
     }
-
-    if (pwd.value === checkPwd.value) { //비밀번호 확인
-        data.value = { //회원가입 데이터 생성
-            nickName: name,
-            email: id,
-            password: pwd
-        }
-        console.log(data.value)
-        $router.push('/')
-    }
     else {
-        alert("비밀번호가 일치하지 않습니다")
+        if (pwd.value === checkPwd.value) { //비밀번호 확인
+            data.value = { //회원가입 데이터 생성
+                nickName: name,
+                email: id,
+                password: pwd
+            }
+            console.log(data.value)
+            $router.push('/')
+        }
+        else {
+            alert("비밀번호가 일치하지 않습니다")
+        }
     }
+
 }
 
 </script>
