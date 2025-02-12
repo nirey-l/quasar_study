@@ -47,23 +47,29 @@ const $router = useRouter()
 
 // 로그인
 function Login() {
-    if (!id.value || !pwd.value) { //id 또는 pwd가 비어 있으면 경고 메시지 표시
+    if (!id.value || !pwd.value) { // id 또는 pwd가 비어 있으면 경고 메시지 표시
         alert("아이디 또는 비밀번호를 입력하세요")
     }
     else {
-        api.post('/auth/login', { email: id.value, password: pwd.value })
-            .then((res) => {
-                console.log(res.data);
-                if (res.data.message === "로그인 성공") {
-                    $router.push('/') //로그인 성공 후 index페이지로 이동
-                } else {
+        // 아이디와 비밀번호가 admin / 1234 인지 확인
+        if (id.value === "admin" && pwd.value === "1234") {
+            $router.push('/admin') 
+        } else {
+            // 일반 로그인 처리
+            api.post('/auth/login', { email: id.value, password: pwd.value })
+                .then((res) => {
+                    console.log(res.data);
+                    if (res.data.message === "로그인 성공") {
+                        $router.push('/') // 로그인 성공 후 index 페이지로 이동
+                    } else {
+                        alert('로그인 실패')
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
                     alert('로그인 실패')
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                alert('로그인 실패')
-            });
+                });
+        }
     }
 }
 </script>

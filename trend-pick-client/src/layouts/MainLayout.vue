@@ -41,8 +41,8 @@ const $route = useRoute()
 const $router = useRouter()
 const leftDrawerOpen = ref(false)
 const tabs = ref([
-  { label:"Best", options: ["아우터", "원피스", "니트", "티셔츠", "블라우스/셔츠", "스커트", "팬츠"] },
-  { label: "New", options: ["아우터", "원피스", "니트", "티셔츠", "블라우스/셔츠", "스커트", "팬츠"] }
+  { label:"Best", options: ["TOP", "BOTTOM", "OUTER", "DRESS", "SHOES", "ACC", "SPORTWEAR", "INNERWEAR"] },
+  { label: "New", options: ["TOP", "BOTTOM", "OUTER", "DRESS", "SHOES", "ACC", "SPORTWEAR", "INNERWEAR"] }
 ])
 const category = ref()
 
