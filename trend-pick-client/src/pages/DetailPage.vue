@@ -41,6 +41,7 @@
 import { api } from "src/boot/axios";
 import { onMounted, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'; //route: 페이지 url, router: 라우팅
+import Cookies from "js-cookie"; // 쿠키에서 JWT 토큰 가져오기 위해 추가
 
 const productId = ref()
 // const cartId = ref()
@@ -52,6 +53,7 @@ const price = 30000
 const quantity = ref(1)
 const totalPrice = computed(() => price * quantity.value) //computed(): 이미 ref로 선언된 값에 따라 또 바껴야 하는 변수
 const isFreesize = ref(false)
+const token = ref()
 
 // // 장바구니 생성
 // function createCart() {
@@ -77,8 +79,26 @@ function addToCart() {
         });
 }
 
+// 상품 상세 조회
+function detailItem() {
+    token.value = Cookies.get('jwt_token')
+    console.log(token.value)
+    api.get(`/item/${productId.value}`, { //:itemId 이거는 이름이 바껴도 상관없음
+        headers: {
+            Authorization: `Bearer ${token.value}`, // JWT 토큰 추가
+        },
+    })
+        .then((res) => {
+            console.log(res.data)
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+}
+
 onMounted(() => {
     productId.value = $route.query.itemId
     console.log("상품 ID:", productId.value)
+    detailItem()
 })
 </script>

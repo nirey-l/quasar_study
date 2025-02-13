@@ -30,7 +30,6 @@
             <img src="~assets/1.png" @click="Detail(i)">
             <div class="row justify-between items-center q-pa-md">
               <div>
-                {{ item }}
                 <div class="text-bold">{{ item.name }}</div>
                 <div>{{ item.salePrice }}</div>
               </div>
@@ -70,7 +69,7 @@ function fetchItems() {
   })
     .then((res) => {
       console.log(res)
-      items.value = res.data.itemData; // API에서 가져온 데이터를 items 배열에 저장
+      items.value = res.data; // API에서 가져온 데이터를 items 배열에 저장
       console.log(items.value);
     })
     .catch((error) => {
@@ -85,8 +84,13 @@ function fetchCategoryItems(categoryName) {
     fetchItems(); // categoryName이 없거나 all이면 전체 상품을 불러옴
     return;
   }
-
-  api.get(`/item/category/${categoryName}`)
+  
+  if (!token.value) return; // 토큰이 없으면 요청하지 않음
+  api.get(`/item/category/${categoryName}`, {
+    headers: {
+      Authorization: `Bearer ${token.value}`, // JWT 토큰 추가
+    },
+  })
     .then((res) => {
       console.log(res.data);
       items.value = res.data.data; // 데이터 반영
