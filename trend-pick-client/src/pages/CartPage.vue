@@ -122,6 +122,13 @@ function removeItem(index) {
 }
 
 function Index() {
+    api.post(`/order/create`)
+        .then((res) => {
+            console.log(res.data)
+        })
+        .catch((error) => {
+            console.error(error)
+        });
     alert("주문이 완료됐습니다");
     $router.push('/')
 }

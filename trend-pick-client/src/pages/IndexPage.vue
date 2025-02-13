@@ -30,8 +30,9 @@
             <img src="~assets/1.png" @click="Detail(i)">
             <div class="row justify-between items-center q-pa-md">
               <div>
+                {{ item }}
                 <div class="text-bold">{{ item.name }}</div>
-                <div>{{ item.price }}</div>
+                <div>{{ item.salePrice }}</div>
               </div>
               <q-card-actions align="right">
                 <q-btn flat round color="red" icon="favorite" @click="wishlist" />
@@ -47,32 +48,30 @@
 
 <script setup>
 import { api } from "src/boot/axios";
-import { onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import Cookies from "js-cookie";
 
 const $router = useRouter()
 const $route = useRoute()
 const slide = ref(1) //첫 번째 슬라이드가 초기 상태에서 표시
 const autoplay = ref(true) //캐러셀은 초기 상태에서 자동 재생
-const items = ref([
-  { id: 1, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  { id: 2, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  { id: 3, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  { id: 4, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  { id: 5, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  { id: 6, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  { id: 7, image: "~assets/1.png", name: "남성 니트", price: "30,000원" },
-  { id: 8, image: "~assets/1.png", name: "남성 니트", price: "30,000원" }
-])
-
+const items = ref()
 const category = ref($route.query.category || "all"); // 만약 URL에서 category 값을 찾을 수 없으면 all(전체 상품 보기)을 기본값으로 설정)
+const token = ref()
 
 // 전체 상품 조회 API
 function fetchItems() {
-  api.get('/item')
+  if (!token.value) return; // 토큰이 없으면 요청하지 않음
+  api.get('/item', {
+    headers: {
+      Authorization: `Bearer ${token.value}`, // JWT 토큰 추가
+    },
+  })
     .then((res) => {
-      console.log(res.data);
-      items.value = res.data; // API에서 가져온 데이터를 items 배열에 저장
+      console.log(res)
+      items.value = res.data.itemData; // API에서 가져온 데이터를 items 배열에 저장
+      console.log(items.value);
     })
     .catch((error) => {
       console.error(error);
@@ -87,10 +86,10 @@ function fetchCategoryItems(categoryName) {
     return;
   }
 
-  api.get(`/category/${categoryName}`)
+  api.get(`/item/category/${categoryName}`)
     .then((res) => {
       console.log(res.data);
-      items.value = res.data; // 데이터 반영
+      items.value = res.data.data; // 데이터 반영
     })
     .catch((error) => {
       console.error(error);
@@ -99,31 +98,12 @@ function fetchCategoryItems(categoryName) {
 
 // 상품 상세 페이지 이동/조회
 function Detail(index) {
-  const item = items.value[index] // 해당 상품 객체를 가져옴
-  const itemId = item.id // 해당 상품의 id 값을 가져옴
-
-  // if (!itemId) {
-  //   console.error("itemId is undefined");
-  //   return;
-  // }
-
-  // console.log("Selected Item ID:", itemId);
-
-  api.get(`/item/${itemId}`)
-    .then((res) => {
-      console.log(res.data)
-      $router.push(`detail?itemId=${itemId}`)
-    })
-    .catch((error) => {
-      console.error(error)
-    });
+  $router.push(`detail?itemId=${index}`)
 }
 
 // 위시리스트 상품 추가
 function wishlist() {
-  $router.push('wishlist')
-
-  api.post(`/add`, { itemId: items.value })
+  api.post(`/wishlist/add`, { itemId: items.value })
     .then((res) => {
       console.log(res.data)
       //$router.push('wishlist')
@@ -135,6 +115,11 @@ function wishlist() {
 
 // 페이지 로딩 시 전체 상품 데이터 가져오기
 // onMounted: 페이지 처음 로딩시 실행할 코드
+onBeforeMount(() => {
+  token.value = Cookies.get("jwt_token")
+  console.log(Cookies.get("jwt_token")); // 쿠키에 저장된 JWT 확인
+})
+
 onMounted(() => {
   fetchCategoryItems(category.value);
 });

@@ -42,7 +42,7 @@ const items = ref([
 
 // 주문 생성
 // function createOrder() {
-//     api.post(`/create`)
+//     api.post(`/order/create`)
 //         .then((res) => {
 //             console.log(res.data)
 //         })

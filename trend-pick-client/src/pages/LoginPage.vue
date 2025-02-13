@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="flex-center flex q-my-md ">
-                        <q-btn flat @click="find_pwd" label="forgot pwd?" type="submit" to="/find_pwd"/>
+                        <q-btn flat @click="find_pwd" label="forgot pwd?" type="submit" to="/find_pwd" />
                     </div>
                 </div>
             </div>
@@ -40,6 +40,8 @@
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import Cookies from "js-cookie";
+
 
 const id = ref()
 const pwd = ref()
@@ -53,13 +55,18 @@ function Login() {
     else {
         // 아이디와 비밀번호가 admin / 1234 인지 확인
         if (id.value === "admin" && pwd.value === "1234") {
-            $router.push('/admin') 
+            $router.push('/admin')
         } else {
             // 일반 로그인 처리
             api.post('/auth/login', { email: id.value, password: pwd.value })
                 .then((res) => {
-                    console.log(res.data);
-                    if (res.data.message === "로그인 성공") {
+                    console.log(res);
+                    if (res.status === 200) { //200: http 2xx => 성공
+                        // 토큰을 쿠키에 저장 (HTTP 전송 시 사용할 수 있도록 설정)
+                        Cookies.set("jwt_token", res.data.token, {
+                            expires: 7, // 7일 동안 유지
+                        });
+                        console.log("토큰 저장 완료")
                         $router.push('/') // 로그인 성공 후 index 페이지로 이동
                     } else {
                         alert('로그인 실패')
