@@ -69,6 +69,7 @@ const items = ref([
 const item = items.value // 해당 상품 객체를 가져옴
 const itemId = item.id // 해당 상품의 id 값을 가져옴
 const selectAll = ref(false) // 전체 선택 체크박스 상태 관리
+const token = ref()
 
 // 선택된 아이템만 필터링
 // const select = computed(() => {
@@ -99,6 +100,8 @@ function removeAllItems() {
 
 // 장바구니 조회
 function cart() {
+    token.value = Cookies.get('jwt_token')
+    console.log(token.value)
     api.get(`/cart`)
         .then((res) => {
             if (res.status === 200) { //200: http 2xx => 성공
