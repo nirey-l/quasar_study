@@ -58,6 +58,7 @@
 import { api } from "src/boot/axios";
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import Cookies from "js-cookie";
 
 const $router = useRouter()
 const items = ref([
@@ -100,8 +101,16 @@ function removeAllItems() {
 function cart() {
     api.get(`/cart`)
         .then((res) => {
-            items.value = res.data // 받아온 데이터를 items 배열에 저장하여 화면에 표시
-            console.log(res.data)
+            if (res.status === 200) { //200: http 2xx => 성공
+                // 토큰을 쿠키에 저장 (HTTP 전송 시 사용할 수 있도록 설정)
+                Cookies.set("jwt_token", res.data.token, {
+                    expires: 7, // 7일 동안 유지
+                });
+                console.log("토큰 저장 완료")
+                items.value = res.data // 받아온 데이터를 items 배열에 저장하여 화면에 표시
+                console.log(res.data)
+
+            } 
         })
         .catch((error) => {
             console.error(error)
