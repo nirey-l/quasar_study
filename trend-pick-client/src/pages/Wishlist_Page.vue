@@ -22,6 +22,7 @@
 import { api } from "src/boot/axios";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router"; // route: 페이지 url, router: 라우팅
+import Cookies from "js-cookie"; // 쿠키에서 JWT 토큰 가져오기 위해 추가
 
 const $router = useRouter()
 const items = ref([
@@ -31,6 +32,7 @@ const items = ref([
 ])
 const item = items.value // 해당 상품 객체를 가져옴
 const itemId = item.id // 해당 상품의 id 값을 가져옴
+const token = ref()
 
 // 상품 상세 페이지 이동
 function Detail(itemId) {
@@ -46,7 +48,13 @@ function Detail(itemId) {
 
 // 사용자 위시리스트 조회
 function wishlist() {
-    api.get(`/wishlist`)
+    token.value = Cookies.get('jwt_token')
+    console.log(token.value)
+    api.get(`/wishlist`, {
+        headers: {
+            Authorization: `Bearer ${token.value}`, // JWT 토큰 추가
+        },
+    })
         .then((res) => {
             items.value = res.data // 받아온 데이터를 items 배열에 저장하여 화면에 표시
             console.log(res.data)

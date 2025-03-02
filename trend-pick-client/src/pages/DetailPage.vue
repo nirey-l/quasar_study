@@ -69,7 +69,13 @@ const token = ref()
 
 // 장바구니 상품 추가
 function addToCart() {
-    api.post(`/add`, { itemId: productId.value })
+    token.value = Cookies.get('jwt_token')
+    console.log(token.value)
+    api.post(`/add`, { itemId: productId.value }, {
+        headers: {
+            Authorization: `Bearer ${token.value}`, // JWT 토큰 추가
+        }
+    })
         .then((res) => {
             console.log(res.data)
             $router.push('cart')
