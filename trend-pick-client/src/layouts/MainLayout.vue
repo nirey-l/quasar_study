@@ -28,8 +28,8 @@
         <div class="row items-center q-gutter-x-md">
           <q-btn flat dense round icon="search" />
           <q-btn flat round dense icon="person_outline" @click="Login" />
-          <q-btn flat round dense icon="favorite_border" @click="Wishlist" />
-          <q-btn flat round dense icon="shopping_bag" @click="Cart" />
+          <q-btn flat round dense icon="favorite_border"  />
+          <q-btn flat round dense icon="shopping_bag"  />
         </div>
       </q-toolbar>
 
@@ -106,9 +106,7 @@ function goTo(pageName) {
 }
 
 function Login() { $router.push('login') }
-function Cart() { $router.push('cart') }
 function Index() { $router.push('/') }
-function Wishlist() { $router.push('wishlist') }
 </script>
 
 <style scoped>
