@@ -1,88 +1,75 @@
 <template>
-  <div>
-    <div class="fullscreen-image">
-      <div class="overlay-content text-center">
-        <h1 class="text-white title-text">NEW SEASON ARRIVALS</h1>
-      </div>
+  <q-page style="padding: 0;">
+    <div class="main-banner">
+      <q-img 
+        src="~assets/main.jpeg" 
+        style="min-height: 60vh;" 
+        fit="cover"
+      >
+        <div class="absolute-full flex flex-center">
+          <h1 class="text-white title-text">NEW SEASON ARRIVALS</h1>
+        </div>
+      </q-img>
     </div>
 
-    <div class="q-pa-xl">
-      <div class="text-h5 text-center text-weight-bold q-mb-lg">Best Item</div>
-      <div class="row q-col-gutter-lg">
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card flat bordered>
-            <q-img src="https://i.imgur.com/example1.jpg" />
-            <q-card-section>
-              <div class="text-subtitle1">클래식 블레이저</div>
-              <div class="text-caption text-grey">₩129,000</div>
-            </q-card-section>
-          </q-card>
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card flat bordered>
-            <q-img src="https://i.imgur.com/example2.jpg" />
-            <q-card-section>
-              <div class="text-subtitle1">와이드핏 데님 팬츠</div>
-              <div class="text-caption text-grey">₩89,000</div>
-            </q-card-section>
-          </q-card>
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card flat bordered>
-            <q-img src="https://i.imgur.com/example3.jpg" />
-            <q-card-section>
-              <div class="text-subtitle1">레더 로퍼</div>
-              <div class="text-caption text-grey">₩159,000</div>
-            </q-card-section>
-          </q-card>
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card flat bordered>
-            <q-img src="https://i.imgur.com/example4.jpg" />
-            <q-card-section>
-              <div class="text-subtitle1">코튼 오버핏 셔츠</div>
-              <div class="text-caption text-grey">₩79,000</div>
-            </q-card-section>
-          </q-card>
-        </div>
+    <div class="row">
+      <div class="col-6 cursor-pointer" @click="goToPage('/collection')">
+        <q-img src="~assets/main2.jpeg" :ratio="1">
+          <div class="absolute-full flex flex-center">
+            <h2 class="text-white subtitle-text">Collection</h2>
+          </div>
+        </q-img>
+      </div>
+      <div class="col-6 cursor-pointer" @click="goToPage('/shop')">
+        <q-img src="~assets/main3.jpeg" :ratio="1">
+          <div class="absolute-full flex flex-center">
+            <h2 class="text-white subtitle-text">Shop</h2>
+          </div>
+        </q-img>
       </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+// 페이지 이동 함수
+function goToPage(path) {
+  router.push(path);
+}
 </script>
 
 <style scoped>
-.fullscreen-image {
-  /* 👇 height를 min-height로 변경하여 스크롤 가능하게 만듦 */
-  min-height: calc(100vh - 66px);
-  width: 100%;
-  
-  background: url('../assets/2.jpeg') no-repeat center center;
-  background-size: cover;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* ... 나머지 스타일은 기존과 동일 ... */
-.overlay-content {
-  z-index: 1;
-}
-
 .title-text {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 700;
   letter-spacing: 0.2rem;
-  margin-bottom: 2rem;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
+/* 👇 작은 이미지 위의 텍스트를 위한 새로운 스타일 */
+.subtitle-text {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* 이미지 아래의 작은 공백 제거 */
+.q-img {
+  vertical-align: top;
+}
+
+/* 모바일 화면 대응 */
 @media (max-width: 600px) {
   .title-text {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
+  }
+  .subtitle-text {
+    font-size: 1.2rem;
   }
 }
 </style>

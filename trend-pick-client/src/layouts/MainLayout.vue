@@ -1,115 +1,144 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-white text-black q-pa-sm" bordered>
-      <q-toolbar>
-        <div class="row items-center">
-          <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" class="q-mr-lg" />
-          <div class="text-h5 text-weight-bold cursor-pointer" @click="Index">
-            Trend Pick
-          </div>
+    <q-header 
+      class="bg-white text-black" 
+      bordered 
+      @mouseleave="isSubNavVisible = false"
+    >
+      <q-toolbar class="q-px-xl q-py-md">
+        <div 
+          class="row items-center q-gutter-x-md" 
+          @mouseover="showSubNav('Trend')"
+        >
+          <q-btn flat no-caps dense label="Trend" class="text-subtitle1 text-weight-bold" />
+        </div>
+        <div 
+          class="row items-center q-gutter-x-md q-ml-sm"
+          @mouseover="showSubNav('Pick')"
+        >
+          <q-btn flat no-caps dense label="Pick" class="text-subtitle1 text-weight-bold" />
         </div>
 
         <q-space />
+        <div class="text-h3 text-weight-bold cursor-pointer main-logo" @click="Index">
+          Trend Pick
+        </div>
+        <q-space />
 
-        <div class="row items-center">
-          <q-btn flat round dense icon="login" @click="Login" class="q-ml-sm" />
-          <q-btn flat round dense icon="favorite_border" @click="Wishlist" class="q-ml-sm" />
-          <q-btn flat round dense icon="shopping_bag" @click="Cart" class="q-ml-sm" />
-          <q-btn flat round dense icon="receipt_long" @click="Order" class="q-ml-sm" />
+        <div class="row items-center q-gutter-x-md">
+          <q-btn flat dense round icon="search" />
+          <q-btn flat round dense icon="person_outline" @click="Login" />
+          <q-btn flat round dense icon="favorite_border" @click="Wishlist" />
+          <q-btn flat round dense icon="shopping_bag" @click="Cart" />
         </div>
       </q-toolbar>
-    </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered>
-      <div class="column">
-        <q-list>
-          <q-expansion-item
-            expand-separator
-            :label="tab.label"
-            default-opened
-            v-for="(tab, i) in tabs"
-            :key="i"
-            auto-close
-            stretch
-            flat
-            header-class="bg-grey-2 text-black"
-          >
-            <q-item v-for="(option, i) in tab.options" :key="i" clickable @click="Category(option)">
-              <q-item-section>{{ option }}</q-item-section>
-            </q-item>
-          </q-expansion-item>
-        </q-list>
-      </div>
-    </q-drawer>
+      <q-toolbar v-show="isSubNavVisible" class="q-px-xl q-py-sm transition-show">
+        <q-btn
+          v-for="nav in activeSubNav"
+          :key="nav"
+          flat
+          dense
+          no-caps
+          :label="nav"
+          class="text-subtitle2 text-weight-medium q-mr-lg"
+          @click="goTo(nav)"
+        />
+      </q-toolbar>
+    </q-header>
 
     <q-page-container>
       <router-view />
     </q-page-container>
 
-    <div class="bg-white text-black q-pa-lg">
-
-      <q-separator />
-
-      <div class="q-mt-md" style="font-size: 12px; color: #666;">
+    <div class="q-pa-xl bg-white text-black footer-container">
+      <div class="row justify-between items-center">
         <div class="row q-gutter-x-md">
-          <span>(주)트렌드픽코리아</span>
-          <span>사업자등록번호: 123-45-67890</span>
-          <span>대표: 홍길동</span>
-          <span>주소: 서울특별시 강남구 테헤란로 123, 45층</span>
+          <q-btn flat dense no-caps label="(주)트렌드픽" class="footer-link text-weight-bold" />
+          <q-btn flat dense no-caps label="이용약관" class="footer-link" />
+          <q-btn flat dense no-caps label="개인정보처리방침" class="footer-link" />
+          <q-btn flat dense no-caps label="이용안내" class="footer-link" />
+          <q-btn flat dense no-caps label="고객센터" class="footer-link" />
         </div>
-        <div class="row q-gutter-x-md q-mt-sm">
-          <q-btn flat dense no-caps class="text-weight-bold" style="font-size: 12px;" label="개인정보처리방침" />
-          <q-btn flat dense no-caps style="font-size: 12px;" label="웹사이트이용약관" />
-          <q-btn flat dense no-caps style="font-size: 12px;" label="이용약관" />
+        <div>
+          <q-btn flat dense icon="fab fa-instagram" />
         </div>
       </div>
-    </div> </q-layout>
+
+      <q-separator class="q-my-lg" />
+
+      <div class="text-caption text-grey-7 footer-info">
+        <p>
+          대표. 홍길동 | 대표전화. 1234-5678 | 주소. 서울특별시 강남구 테헤란로 123, 45층<br>
+          사업자등록번호. 123-45-67890 [사업자정보확인]<br>
+          통신판매업신고. 2025-서울강남-01234
+        </p>
+        <p>© TrendPick All rights reserved.</p>
+      </div>
+    </div>
+
+  </q-layout>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from "vue-router";
 
-const $router = useRouter()
-const leftDrawerOpen = ref(false)
-const tabs = ref([
-  { label:"Best", options: ["TOP", "BOTTOM", "OUTER", "DRESS"] },
-])
+const $router = useRouter();
 
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+const isSubNavVisible = ref(false);
+
+const subNavs = {
+  Trend: ['New in', 'Project', 'Collection', 'Shop', 'Archive', 'About'],
+  Pick: ['Outwears', 'Tops', 'Bottoms', 'Dresses', 'Bags', 'Shoes']
+};
+
+const activeSubNav = ref([]);
+
+function showSubNav(menuType) {
+  isSubNavVisible.value = true;
+  activeSubNav.value = subNavs[menuType];
 }
 
-function Login() {
-  $router.push('login')
+function goTo(pageName) {
+  const path = pageName.toLowerCase().replace(' ', '-');
+  $router.push(`/${path}`);
 }
 
-function Cart() {
-  $router.push('cart')
-}
-
-function Index() {
-  $router.push('/')
-}
-
-function Category(cat) {
-  console.log(cat)
-  $router.push(`/?category=${cat}`)
-}
-
-function Wishlist() {
-  console.log()
-  $router.push(`wishlist`)
-}
-
-function Order() {
-  $router.push('order')
-}
+function Login() { $router.push('login') }
+function Cart() { $router.push('cart') }
+function Index() { $router.push('/') }
+function Wishlist() { $router.push('wishlist') }
 </script>
 
 <style scoped>
 .text-weight-bold {
   font-family: 'Helvetica Neue', sans-serif;
   letter-spacing: 1px;
+}
+
+/* 👇 New style for the main logo */
+.main-logo {
+  font-family: 'Times New Roman', Times, serif; /* Font from 'Modern Classic' */
+}
+
+.transition-show {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform-origin: top;
+}
+.q-header .q-toolbar[style*="display: none"] {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Footer styles */
+.footer-container {
+  border-top: 1px solid #e0e0e0;
+}
+.footer-link {
+  padding: 0 4px;
+}
+.footer-info p {
+  margin: 0 0 8px 0;
 }
 </style>

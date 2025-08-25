@@ -11,7 +11,8 @@ const routes = [
       { path: 'find_pwd', component: () => import('pages/FindpwdPage.vue') },
       { path: 'wishlist', component: () => import('pages/Wishlist_Page.vue') },
       { path: 'order', component: () => import('pages/OrderPage.vue') },
-      { path: 'admin', component: () => import('pages/AdminPage.vue') }
+      { path: 'admin', component: () => import('pages/AdminPage.vue') },
+      { path: 'collection', component: () => import('pages/CollectionPage.vue') }
     ]
   },
 
